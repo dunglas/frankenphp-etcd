@@ -1,0 +1,9 @@
+{
+    frankenphp
+    debug
+}
+
+http:// {
+	root .
+	php_server
+}

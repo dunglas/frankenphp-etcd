@@ -1,0 +1,4 @@
+package etcd
+
+func errorToException() {
+}
