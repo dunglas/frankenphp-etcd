@@ -3,21 +3,54 @@
 /** @generate-class-entries */
 
 namespace Dunglas\Etcd {
-	final class Client
-	{
-		/**
-		 * @param string[] $endpoints
-		 */
-		public static function getOrCreate(string $name, array $endpoints): \Dunglas\Etcd\Client {}
+    final class Client
+    {
+        /**
+         * Creates a new persistent etcd client or returns an existing one.
+         *
+         * Clients are identified by their names.
+         * They are persisted between requests and shared worker instances and persist after the end of the PHP script.
+         * The same instance can be used to handle requests concurrently.
+         *
+         * @param string[] $endpoints
+         */
+        public static function getOrCreate(string $name, array $endpoints): \Dunglas\Etcd\Client
+        {
+        }
 
-		public readonly string $name;
+        /**
+         * The name of the instance.
+         */
+        public readonly string $name;
 
-		public function put(string $key, string $value): void {}
+        /**
+         * Puts a key-value pair in the etcd store.
+         */
+        public function put(string $key, string $value): void
+        {
+        }
 
-		public function get(string $key): ?string {}
+        /**
+         * Gets a value from the etcd store by its key.
+         * `null` is returned if the key does not exist.
+         */
+        public function get(string $key): ?string
+        {
+        }
 
-		public function delete(string $key): void {}
+        /**
+         * Deletes a key-value pair from the etcd store by its key.
+         * If the key does not exist, nothing happens.
+         */
+        public function delete(string $key): void
+        {
+        }
 
-		public function close(): void {}
-	}
+        /**
+         * Closes the client and destroys it globally.
+         */
+        public function close(): void
+        {
+        }
+    }
 }
