@@ -6,7 +6,6 @@ toolchain go1.24.3
 
 require (
 	github.com/caddyserver/caddy/v2 v2.10.0
-	github.com/dunglas/caddy-cbrotli v1.0.0
 	github.com/dunglas/frankenphp/caddy v1.6.2
 	go.etcd.io/etcd/client/v3 v3.6.0
 )
@@ -71,7 +70,6 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
-	github.com/google/brotli/go/cbrotli v0.0.0-20241111155135-4303850b01d6 // indirect
 	github.com/google/cel-go v0.25.0 // indirect
 	github.com/google/certificate-transparency-go v1.3.1 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
