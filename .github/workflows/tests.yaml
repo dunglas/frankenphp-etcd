@@ -38,3 +38,5 @@ jobs:
         run: go test -tags nobadger,nomysql,nopgx,nowatcher,nobrotli -race -v ./...
       - name: Lint Go code
         uses: golangci/golangci-lint-action@v8
+        with:
+          version: "latest"
