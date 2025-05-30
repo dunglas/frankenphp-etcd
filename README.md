@@ -31,7 +31,7 @@ xcaddy build \
     --with github.com/dunglas/frankenphp/caddy \
     --with github.com/dunglas/mercure/caddy \
     --with github.com/dunglas/vulcain/caddy
-    # Add extra Caddy modules and FrankenPHP exntesions here
+    # Add extra Caddy modules and FrankenPHP extensions here
 ```
 
 That's all! Your custom FrankenPHP build contains the `frankenphp-etcd` extension.
