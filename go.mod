@@ -8,6 +8,7 @@ require (
 	github.com/caddyserver/caddy/v2 v2.10.0
 	github.com/dunglas/frankenphp/caddy v1.6.2
 	go.etcd.io/etcd/client/v3 v3.6.0
+	go.uber.org/zap v1.27.0
 )
 
 require (
@@ -165,7 +166,6 @@ require (
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/mock v0.5.2 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.27.0 // indirect
 	go.uber.org/zap/exp v0.3.0 // indirect
 	golang.org/x/crypto v0.38.0 // indirect
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20250512184618-9dbbcf002b5c // indirect

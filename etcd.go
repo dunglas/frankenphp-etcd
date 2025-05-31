@@ -4,7 +4,6 @@ package etcd
 //#include "etcd.h"
 import "C"
 import (
-	"context"
 	"go.etcd.io/etcd/client/v3"
 	"log/slog"
 	"sync"
@@ -39,7 +38,12 @@ func go_client_load_or_create(name *C.char, phpEndpoints *C.zend_string, phpEndp
 	}
 
 	// TODO: handle other options
-	client, err := clientv3.New(clientv3.Config{Endpoints: endpoints})
+	cfg := clientv3.Config{Endpoints: endpoints, Context: getContext()}
+	if logger := getLogger(); logger != nil {
+		cfg.Logger = logger
+	}
+
+	client, err := clientv3.New(cfg)
 	if err != nil {
 		error = C.CString(err.Error())
 
@@ -74,7 +78,7 @@ func go_client_put(name *C.char, key, value *C.zend_string) *C.char {
 	defer clientRegistryMu.RUnlock()
 
 	client := clientRegistry[name]
-	if _, err := client.Put(context.TODO(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)), C.GoStringN((*C.char)(unsafe.Pointer(&value.val)), C.int(value.len))); err != nil {
+	if _, err := client.Put(getContext(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)), C.GoStringN((*C.char)(unsafe.Pointer(&value.val)), C.int(value.len))); err != nil {
 		return C.CString(err.Error())
 	}
 
@@ -87,7 +91,7 @@ func go_client_get(name *C.char, key *C.zend_string) (val *C.char, error *C.char
 	defer clientRegistryMu.RUnlock()
 
 	client := clientRegistry[name]
-	resp, err := client.Get(context.TODO(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
+	resp, err := client.Get(getContext(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
 	if err != nil {
 		return nil, C.CString(err.Error())
 	}
@@ -108,7 +112,7 @@ func go_client_delete(name *C.char, key *C.zend_string) *C.char {
 	defer clientRegistryMu.RUnlock()
 
 	client := clientRegistry[name]
-	_, err := client.Delete(context.TODO(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
+	_, err := client.Delete(getContext(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
 	if err != nil {
 		return C.CString(err.Error())
 	}
