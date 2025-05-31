@@ -56,7 +56,7 @@ if (rand(0, 10) > 5) {
     // This will affect other requests or worker script instances
     // as the client is shared globally.
     // You usually don't need to close the connection.
-	$client->close();
+    $client->close();
 }
 ```
 

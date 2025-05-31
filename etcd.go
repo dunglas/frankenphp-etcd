@@ -35,7 +35,7 @@ func go_client_load_or_create(name *C.char, phpEndpoints *C.zend_string, phpEndp
 	endpoints := make([]string, phpEndpointsLen)
 	for i := 0; i < int(phpEndpointsLen); i++ {
 		endpoints[i] = C.GoStringN((*C.char)(unsafe.Pointer(&phpEndpoints.val)), C.int(phpEndpoints.len))
-		phpEndpoints = (*C.zend_string)(unsafe.Add(unsafe.Pointer(phpEndpoints), unsafe.Sizeof(*&C.zend_string{})))
+		phpEndpoints = (*C.zend_string)(unsafe.Add(unsafe.Pointer(phpEndpoints), unsafe.Sizeof(C.zend_string{})))
 	}
 
 	// TODO: handle other options

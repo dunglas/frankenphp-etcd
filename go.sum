@@ -169,8 +169,6 @@ github.com/dlclark/regexp2 v1.11.5 h1:Q/sSnsKerHeCkc/jSTNq1oCm7KiVgUMZRDUoRu0JQZ
 github.com/dlclark/regexp2 v1.11.5/go.mod h1:DHkYz0B9wPfa6wondMfaivmHpzrQ3v9q8cnmRbL6yW8=
 github.com/dolthub/maphash v0.1.0 h1:bsQ7JsF4FkkWyrP3oCnFJgrCUAFbFf3kOl4L/QxPDyQ=
 github.com/dolthub/maphash v0.1.0/go.mod h1:gkg4Ch4CdCDu5h6PMriVLawB7koZ+5ijb9puGMV50a4=
-github.com/dunglas/caddy-cbrotli v1.0.0 h1:+WNqXBkWyMcIpXB2rVZ3nwcElUbuAzf0kPxNXU4D+u0=
-github.com/dunglas/caddy-cbrotli v1.0.0/go.mod h1:KZsUu3fnQBgO0o3YDoQuO3Z61dFgUncr1F8rg8acwQw=
 github.com/dunglas/frankenphp v1.6.2 h1:Ms5olO4OrS3LLMd53s2XJgZ1cZ3odLCssxDm62qlFAs=
 github.com/dunglas/frankenphp v1.6.2/go.mod h1:BaPr7WO5PmAkMtJvRUhRcmdWNAuEIK1zWLC++c8GhE0=
 github.com/dunglas/frankenphp/caddy v1.6.2 h1:8d/WkkG8oUyrs2zwC8+2M53YhDflZqPCj7XW1Mzo93E=
@@ -235,8 +233,6 @@ github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6
 github.com/golang/snappy v0.0.3/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/golang/snappy v1.0.0 h1:Oy607GVXHs7RtbggtPBnr2RmDArIsAefDwvrdWvRhGs=
 github.com/golang/snappy v1.0.0/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
-github.com/google/brotli/go/cbrotli v0.0.0-20241111155135-4303850b01d6 h1:ygfAzuHUP3wed0um8AamwtZIh022Ie5lnsWHhItj/sY=
-github.com/google/brotli/go/cbrotli v0.0.0-20241111155135-4303850b01d6/go.mod h1:nOPhAkwVliJdNTkj3gXpljmWhjc4wCaVqbMJcPKWP4s=
 github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/btree v1.1.3 h1:CVpQJjYgC4VbzxeGVHfvZrv1ctoYCAI8vbl07Fcxlyg=
 github.com/google/btree v1.1.3/go.mod h1:qOPhT0dTNdNzV6Z/lhRX0YXUafgPLFUh+gZMl761Gm4=

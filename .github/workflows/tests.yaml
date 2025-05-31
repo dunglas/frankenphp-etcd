@@ -1,0 +1,42 @@
+---
+name: Tests
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+env:
+  GOEXPERIMENT: cgocheck2
+  GOTOOLCHAIN: local
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          ini-file: development
+          coverage: none
+          tools: none
+        env:
+          phpts: ts
+          debug: true
+      - name: Set CGO flags
+        run: echo "CGO_CFLAGS=-I${PWD}/watcher/target/include $(php-config --includes)" >> "${GITHUB_ENV}"
+      - name: Install etcd
+        run: sudo apt install -y etcd-server
+      - name: Run tests
+        run: go test -tags nobadger,nomysql,nopgx,nowatcher,nobrotli -race -v ./...
+      - name: Lint Go code
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: "latest"
