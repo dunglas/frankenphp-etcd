@@ -18,13 +18,13 @@ func init() {
 }
 
 var (
-	clientRegistry   = make(map[*C.char]*clientv3.Client)
+	clientRegistry   = make(map[string]*clientv3.Client)
 	clientRegistryMu sync.RWMutex
 )
 
 //export go_client_load_or_create
 func go_client_load_or_create(
-	name *C.char,
+	phpName *C.zend_string,
 	phpEndpoints *C.zend_string,
 	phpEndpointsLen C.int,
 	autoSyncInterval,
@@ -39,12 +39,14 @@ func go_client_load_or_create(
 	rejectOldCluster,
 	permitWithoutStream bool,
 ) (error *C.char) {
+	name := zendStringToGoString(phpName)
+
 	clientRegistryMu.Lock()
 	defer clientRegistryMu.Unlock()
 
 	_, ok := clientRegistry[name]
 	if ok {
-		slog.Debug("The client already exists")
+		slog.Debug("The client already exists", slog.String("name", name))
 
 		return
 	}
@@ -87,13 +89,15 @@ func go_client_load_or_create(
 
 	clientRegistry[name] = client
 
-	slog.Debug("New client created")
+	slog.Debug("New client created", slog.String("name", name))
 
 	return
 }
 
 //export go_client_close
-func go_client_close(name *C.char) *C.char {
+func go_client_close(phpName *C.zend_string) *C.char {
+	name := zendStringToGoString(phpName)
+
 	clientRegistryMu.Lock()
 	defer clientRegistryMu.Unlock()
 	defer delete(clientRegistry, name)
@@ -108,7 +112,9 @@ func go_client_close(name *C.char) *C.char {
 }
 
 //export go_client_put
-func go_client_put(name *C.char, key, value *C.zend_string, timeout int64) *C.char {
+func go_client_put(phpName *C.zend_string, key, value *C.zend_string, timeout int64) *C.char {
+	name := zendStringToGoString(phpName)
+
 	ctx := getContext()
 	if timeout != 0 {
 		var cancel context.CancelFunc
@@ -129,7 +135,9 @@ func go_client_put(name *C.char, key, value *C.zend_string, timeout int64) *C.ch
 }
 
 //export go_client_get
-func go_client_get(name *C.char, key *C.zend_string, timeout int64) (val *C.char, error *C.char) {
+func go_client_get(phpName *C.zend_string, key *C.zend_string, timeout int64) (val *C.char, error *C.char) {
+	name := zendStringToGoString(phpName)
+
 	ctx := getContext()
 	if timeout != 0 {
 		var cancel context.CancelFunc
@@ -158,7 +166,9 @@ func go_client_get(name *C.char, key *C.zend_string, timeout int64) (val *C.char
 }
 
 //export go_client_delete
-func go_client_delete(name *C.char, key *C.zend_string, timeout int64) *C.char {
+func go_client_delete(phpName *C.zend_string, key *C.zend_string, timeout int64) *C.char {
+	name := zendStringToGoString(phpName)
+
 	ctx := getContext()
 	if timeout != 0 {
 		var cancel context.CancelFunc

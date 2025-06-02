@@ -78,8 +78,8 @@ PHP_METHOD(Dunglas_Etcd_Client, getOrCreate) {
   ZEND_HASH_FOREACH_END();
 
   char *error = go_client_load_or_create(
-      ZSTR_VAL(name), *go_endpoints, endpoints_len, auto_sync_interval,
-      dial_timeout, dial_keep_alive_time, dial_keep_alive_timeout, tls,
+      name, *go_endpoints, endpoints_len, auto_sync_interval, dial_timeout,
+      dial_keep_alive_time, dial_keep_alive_timeout, tls,
       max_call_send_msg_size, max_call_recv_msg_size, username, password,
       reject_old_cluster, permit_without_stream);
   efree(go_endpoints);
@@ -113,7 +113,7 @@ PHP_METHOD(Dunglas_Etcd_Client, put) {
 
   zval *name = zend_read_property_ex(etcd_ce, Z_OBJ_P(ZEND_THIS),
                                      ZSTR_KNOWN(ZEND_STR_NAME), false, NULL);
-  char *error = go_client_put(Z_STRVAL_P(name), key, value, timeout);
+  char *error = go_client_put(Z_STR_P(name), key, value, timeout);
   if (error != NULL) {
     zend_throw_exception(NULL, error, 0);
     free(error);
@@ -135,8 +135,7 @@ PHP_METHOD(Dunglas_Etcd_Client, get) {
 
   zval *name = zend_read_property_ex(etcd_ce, Z_OBJ_P(ZEND_THIS),
                                      ZSTR_KNOWN(ZEND_STR_NAME), false, NULL);
-  struct go_client_get_return ret =
-      go_client_get(Z_STRVAL_P(name), key, timeout);
+  struct go_client_get_return ret = go_client_get(Z_STR_P(name), key, timeout);
   if (ret.r1 != NULL) {
     zend_throw_exception(NULL, ret.r1, 0);
     free(ret.r1);
@@ -165,7 +164,7 @@ PHP_METHOD(Dunglas_Etcd_Client, delete) {
 
   zval *name = zend_read_property_ex(etcd_ce, Z_OBJ_P(ZEND_THIS),
                                      ZSTR_KNOWN(ZEND_STR_NAME), false, NULL);
-  char *error = go_client_delete(Z_STRVAL_P(name), key, timeout);
+  char *error = go_client_delete(Z_STR_P(name), key, timeout);
   if (error != NULL) {
     zend_throw_exception(NULL, error, 0);
     free(error);
@@ -178,7 +177,7 @@ PHP_METHOD(Dunglas_Etcd_Client, close) {
 
   zval *name = zend_read_property_ex(etcd_ce, Z_OBJ_P(ZEND_THIS),
                                      ZSTR_KNOWN(ZEND_STR_NAME), false, NULL);
-  char *error = go_client_close(Z_STRVAL_P(name));
+  char *error = go_client_close(Z_STR_P(name));
   if (error != NULL) {
     zend_throw_exception(NULL, error, 0);
     free(error);
