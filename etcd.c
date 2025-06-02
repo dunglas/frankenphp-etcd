@@ -30,10 +30,12 @@ PHP_MINIT_FUNCTION(etcd) {
 }
 
 PHP_METHOD(Dunglas_Etcd_Client, getOrCreate) {
-  zend_string *name;
+  zend_string *name = NULL, *username = NULL, *password = NULL;
   zval *endpoints;
   zend_long auto_sync_interval = 0, dial_timeout = 0, dial_keep_alive_time = 0,
-            dial_keep_alive_timeout = 0;
+            dial_keep_alive_timeout = 0, max_call_send_msg_size = 0,
+            max_call_recv_msg_size = 0;
+  bool tls = false, reject_old_cluster = false, permit_without_stream = false;
 
   // clang-format off
   ZEND_PARSE_PARAMETERS_START(2, 6)
@@ -44,6 +46,13 @@ PHP_METHOD(Dunglas_Etcd_Client, getOrCreate) {
   	Z_PARAM_LONG(dial_timeout)
 	Z_PARAM_LONG(dial_keep_alive_time)
 	Z_PARAM_LONG(dial_keep_alive_timeout)
+	Z_PARAM_BOOL(tls)
+	Z_PARAM_LONG(max_call_send_msg_size)
+	Z_PARAM_LONG(max_call_recv_msg_size)
+	Z_PARAM_STR(username)
+	Z_PARAM_STR(password)
+	Z_PARAM_BOOL(reject_old_cluster)
+	Z_PARAM_BOOL(permit_without_stream)
   ZEND_PARSE_PARAMETERS_END();
   // clang-format on
 
@@ -70,7 +79,9 @@ PHP_METHOD(Dunglas_Etcd_Client, getOrCreate) {
 
   char *error = go_client_load_or_create(
       ZSTR_VAL(name), *go_endpoints, endpoints_len, auto_sync_interval,
-      dial_timeout, dial_keep_alive_time, dial_keep_alive_timeout);
+      dial_timeout, dial_keep_alive_time, dial_keep_alive_timeout, tls,
+      max_call_send_msg_size, max_call_recv_msg_size, username, password,
+      reject_old_cluster, permit_without_stream);
   efree(go_endpoints);
 
   if (error != NULL) {
