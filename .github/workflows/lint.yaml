@@ -27,5 +27,6 @@ jobs:
           VALIDATE_CPP: false
           VALIDATE_GO: false
           VALIDATE_GO_MODULES: false
+          VALIDATE_JSCPD: false
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false

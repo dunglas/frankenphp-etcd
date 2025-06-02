@@ -32,7 +32,8 @@ PHP_MINIT_FUNCTION(etcd) {
 PHP_METHOD(Dunglas_Etcd_Client, getOrCreate) {
   zend_string *name;
   zval *endpoints;
-  zend_long auto_sync_interval = 0, dial_timeout = 0, dial_keep_alive_time = 0, dial_keep_alive_timeout = 0;
+  zend_long auto_sync_interval = 0, dial_timeout = 0, dial_keep_alive_time = 0,
+            dial_keep_alive_timeout = 0;
 
   // clang-format off
   ZEND_PARSE_PARAMETERS_START(2, 6)
@@ -67,8 +68,9 @@ PHP_METHOD(Dunglas_Etcd_Client, getOrCreate) {
   }
   ZEND_HASH_FOREACH_END();
 
-  char *error =
-      go_client_load_or_create(ZSTR_VAL(name), *go_endpoints, endpoints_len, auto_sync_interval, dial_timeout, dial_keep_alive_time, dial_keep_alive_timeout);
+  char *error = go_client_load_or_create(
+      ZSTR_VAL(name), *go_endpoints, endpoints_len, auto_sync_interval,
+      dial_timeout, dial_keep_alive_time, dial_keep_alive_timeout);
   efree(go_endpoints);
 
   if (error != NULL) {
@@ -122,7 +124,8 @@ PHP_METHOD(Dunglas_Etcd_Client, get) {
 
   zval *name = zend_read_property_ex(etcd_ce, Z_OBJ_P(ZEND_THIS),
                                      ZSTR_KNOWN(ZEND_STR_NAME), false, NULL);
-  struct go_client_get_return ret = go_client_get(Z_STRVAL_P(name), key, timeout);
+  struct go_client_get_return ret =
+      go_client_get(Z_STRVAL_P(name), key, timeout);
   if (ret.r1 != NULL) {
     zend_throw_exception(NULL, ret.r1, 0);
     free(ret.r1);
