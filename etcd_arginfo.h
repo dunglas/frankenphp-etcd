@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: fb428a4f2b86c6315f5eb51c0ce128806d59031b */
+ * Stub hash: 309e9e8dcc8c6d27aa2b7460d8e870b93833543f */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(
     arginfo_class_Dunglas_Etcd_Client_getOrCreate, 0, 2, Dunglas\\Etcd\\Client,
@@ -10,6 +10,14 @@ ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, autoSyncInterval, IS_LONG, 0, "0")
 ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, dialTimeout, IS_LONG, 0, "0")
 ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, dialKeepAliveTime, IS_LONG, 0, "0")
 ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, dialKeepAliveTimeout, IS_LONG, 0, "0")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, tls, _IS_BOOL, 0, "false")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, maxCallSendMsgSize, IS_LONG, 0, "0")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, maxCallRecvMsgSize, IS_LONG, 0, "0")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, username, IS_STRING, 0, "\'\'")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, password, IS_STRING, 0, "\'\'")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, rejectOldCluster, _IS_BOOL, 0, "false")
+ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, permitWithoutStream, _IS_BOOL, 0,
+                                      "false")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Dunglas_Etcd_Client_put,

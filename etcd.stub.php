@@ -30,6 +30,13 @@ namespace Dunglas\Etcd {
             int $dialTimeout = 0,
             int $dialKeepAliveTime = 0,
             int $dialKeepAliveTimeout = 0,
+            bool $tls = false,
+            int $maxCallSendMsgSize = 0,
+            int $maxCallRecvMsgSize = 0,
+            string $username = '',
+            string $password = '',
+            bool $rejectOldCluster = false,
+            bool $permitWithoutStream = false,
         ): \Dunglas\Etcd\Client {
         }
 

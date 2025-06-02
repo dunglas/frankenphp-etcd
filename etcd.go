@@ -5,6 +5,7 @@ package etcd
 import "C"
 import (
 	"context"
+	"crypto/tls"
 	"go.etcd.io/etcd/client/v3"
 	"log/slog"
 	"sync"
@@ -30,6 +31,13 @@ func go_client_load_or_create(
 	dialTimeout,
 	dialKeepAliveTime,
 	dialKeepAliveTimeout int64,
+	enableTLS bool,
+	maxCallSendMsgSize,
+	maxCallRecvMsgSize int64,
+	username,
+	password *C.zend_string,
+	rejectOldCluster,
+	permitWithoutStream bool,
 ) (error *C.char) {
 	clientRegistryMu.Lock()
 	defer clientRegistryMu.Unlock()
@@ -43,7 +51,7 @@ func go_client_load_or_create(
 
 	endpoints := make([]string, phpEndpointsLen)
 	for i := 0; i < int(phpEndpointsLen); i++ {
-		endpoints[i] = C.GoStringN((*C.char)(unsafe.Pointer(&phpEndpoints.val)), C.int(phpEndpoints.len))
+		endpoints[i] = zendStringToGoString(phpEndpoints)
 		phpEndpoints = (*C.zend_string)(unsafe.Add(unsafe.Pointer(phpEndpoints), unsafe.Sizeof(C.zend_string{})))
 	}
 
@@ -55,7 +63,17 @@ func go_client_load_or_create(
 		DialTimeout:          time.Duration(dialTimeout),
 		DialKeepAliveTime:    time.Duration(dialKeepAliveTime),
 		DialKeepAliveTimeout: time.Duration(dialKeepAliveTimeout),
+		MaxCallSendMsgSize:   int(maxCallSendMsgSize),
+		MaxCallRecvMsgSize:   int(maxCallRecvMsgSize),
+		Username:             zendStringToGoString(username),
+		Password:             zendStringToGoString(password),
+		RejectOldCluster:     rejectOldCluster,
+		PermitWithoutStream:  permitWithoutStream,
 	}
+	if enableTLS {
+		cfg.TLS = &tls.Config{}
+	}
+
 	if logger := getLogger(); logger != nil {
 		cfg.Logger = logger
 	}
