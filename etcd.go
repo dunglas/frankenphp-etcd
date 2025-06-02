@@ -4,9 +4,11 @@ package etcd
 //#include "etcd.h"
 import "C"
 import (
+	"context"
 	"go.etcd.io/etcd/client/v3"
 	"log/slog"
 	"sync"
+	"time"
 	"unsafe"
 )
 
@@ -20,7 +22,15 @@ var (
 )
 
 //export go_client_load_or_create
-func go_client_load_or_create(name *C.char, phpEndpoints *C.zend_string, phpEndpointsLen C.int) (error *C.char) {
+func go_client_load_or_create(
+	name *C.char,
+	phpEndpoints *C.zend_string,
+	phpEndpointsLen C.int,
+	autoSyncInterval,
+	dialTimeout,
+	dialKeepAliveTime,
+	dialKeepAliveTimeout int64,
+) (error *C.char) {
 	clientRegistryMu.Lock()
 	defer clientRegistryMu.Unlock()
 
@@ -38,7 +48,14 @@ func go_client_load_or_create(name *C.char, phpEndpoints *C.zend_string, phpEndp
 	}
 
 	// TODO: handle other options
-	cfg := clientv3.Config{Endpoints: endpoints, Context: getContext()}
+	cfg := clientv3.Config{
+		Context:              getContext(),
+		Endpoints:            endpoints,
+		AutoSyncInterval:     time.Duration(autoSyncInterval),
+		DialTimeout:          time.Duration(dialTimeout),
+		DialKeepAliveTime:    time.Duration(dialKeepAliveTime),
+		DialKeepAliveTimeout: time.Duration(dialKeepAliveTimeout),
+	}
 	if logger := getLogger(); logger != nil {
 		cfg.Logger = logger
 	}
@@ -73,12 +90,20 @@ func go_client_close(name *C.char) *C.char {
 }
 
 //export go_client_put
-func go_client_put(name *C.char, key, value *C.zend_string) *C.char {
+func go_client_put(name *C.char, key, value *C.zend_string, timeout int64) *C.char {
+	ctx := getContext()
+	if timeout != 0 {
+		var cancel context.CancelFunc
+
+		ctx, cancel = context.WithTimeout(ctx, time.Duration(timeout))
+		defer cancel()
+	}
+
 	clientRegistryMu.RLock()
 	defer clientRegistryMu.RUnlock()
 
 	client := clientRegistry[name]
-	if _, err := client.Put(getContext(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)), C.GoStringN((*C.char)(unsafe.Pointer(&value.val)), C.int(value.len))); err != nil {
+	if _, err := client.Put(ctx, C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)), C.GoStringN((*C.char)(unsafe.Pointer(&value.val)), C.int(value.len))); err != nil {
 		return C.CString(err.Error())
 	}
 
@@ -86,12 +111,20 @@ func go_client_put(name *C.char, key, value *C.zend_string) *C.char {
 }
 
 //export go_client_get
-func go_client_get(name *C.char, key *C.zend_string) (val *C.char, error *C.char) {
+func go_client_get(name *C.char, key *C.zend_string, timeout int64) (val *C.char, error *C.char) {
+	ctx := getContext()
+	if timeout != 0 {
+		var cancel context.CancelFunc
+
+		ctx, cancel = context.WithTimeout(ctx, time.Duration(timeout))
+		defer cancel()
+	}
+
 	clientRegistryMu.RLock()
 	defer clientRegistryMu.RUnlock()
 
 	client := clientRegistry[name]
-	resp, err := client.Get(getContext(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
+	resp, err := client.Get(ctx, C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
 	if err != nil {
 		return nil, C.CString(err.Error())
 	}
@@ -107,12 +140,20 @@ func go_client_get(name *C.char, key *C.zend_string) (val *C.char, error *C.char
 }
 
 //export go_client_delete
-func go_client_delete(name *C.char, key *C.zend_string) *C.char {
+func go_client_delete(name *C.char, key *C.zend_string, timeout int64) *C.char {
+	ctx := getContext()
+	if timeout != 0 {
+		var cancel context.CancelFunc
+
+		ctx, cancel = context.WithTimeout(ctx, time.Duration(timeout))
+		defer cancel()
+	}
+
 	clientRegistryMu.RLock()
 	defer clientRegistryMu.RUnlock()
 
 	client := clientRegistry[name]
-	_, err := client.Delete(getContext(), C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
+	_, err := client.Delete(ctx, C.GoStringN((*C.char)(unsafe.Pointer(&key.val)), C.int(key.len)))
 	if err != nil {
 		return C.CString(err.Error())
 	}
