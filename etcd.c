@@ -184,12 +184,12 @@ PHP_METHOD(Dunglas_Etcd_Client, close) {
 }
 
 zend_module_entry etcd_module_entry = {STANDARD_MODULE_HEADER,
-                                         "frankenphp-etcd",
-                                         NULL,            /* Functions */
-                                         PHP_MINIT(etcd), /* MINIT */
-                                         NULL,            /* MSHUTDOWN */
-                                         NULL,            /* RINIT */
-                                         NULL,            /* RSHUTDOWN */
-                                         NULL,            /* MINFO */
-                                         "0.1.0",
-                                         STANDARD_MODULE_PROPERTIES};
+                                       "frankenphp-etcd",
+                                       NULL,            /* Functions */
+                                       PHP_MINIT(etcd), /* MINIT */
+                                       NULL,            /* MSHUTDOWN */
+                                       NULL,            /* RINIT */
+                                       NULL,            /* RSHUTDOWN */
+                                       NULL,            /* MINFO */
+                                       "0.1.0",
+                                       STANDARD_MODULE_PROPERTIES};
