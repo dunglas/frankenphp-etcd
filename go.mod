@@ -4,6 +4,8 @@ go 1.24.0
 
 toolchain go1.24.3
 
+replace github.com/dunglas/frankenphp =>  ../frankenphp
+
 require (
 	github.com/caddyserver/caddy/v2 v2.10.0
 	github.com/dunglas/frankenphp/caddy v1.6.2

@@ -1,7 +1,9 @@
 #ifndef _EXTGO_H
 #define _EXTGO_H
 
-void register_extension();
+#include <php.h>
+
+extern zend_module_entry etcd_module_entry;
 
 typedef struct go_string {
   size_t len;

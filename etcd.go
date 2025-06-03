@@ -6,6 +6,7 @@ import "C"
 import (
 	"context"
 	"crypto/tls"
+	"github.com/dunglas/frankenphp"
 	"go.etcd.io/etcd/client/v3"
 	"log/slog"
 	"sync"
@@ -14,7 +15,7 @@ import (
 )
 
 func init() {
-	C.register_extension()
+	frankenphp.RegisterExtension(unsafe.Pointer(&C.etcd_module_entry))
 }
 
 var (

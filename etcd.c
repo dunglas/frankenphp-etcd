@@ -5,8 +5,6 @@
 #include "etcd.h"
 #include "etcd_arginfo.h"
 
-static int (*original_php_register_internal_extensions_func)(void) = NULL;
-
 static zend_function *etcd_get_constructor(zend_object *object) {
   zend_throw_error(NULL, "Cannot directly construct \\Dunglas\\Etcd\\Client, "
                          "use the getOrCreate() method instead");
@@ -185,7 +183,7 @@ PHP_METHOD(Dunglas_Etcd_Client, close) {
   }
 }
 
-zend_module_entry ext_go_module_entry = {STANDARD_MODULE_HEADER,
+zend_module_entry etcd_module_entry = {STANDARD_MODULE_HEADER,
                                          "frankenphp-etcd",
                                          NULL,            /* Functions */
                                          PHP_MINIT(etcd), /* MINIT */
@@ -195,23 +193,3 @@ zend_module_entry ext_go_module_entry = {STANDARD_MODULE_HEADER,
                                          NULL,            /* MINFO */
                                          "0.1.0",
                                          STANDARD_MODULE_PROPERTIES};
-
-PHPAPI int register_internal_extensions(void) {
-  if (original_php_register_internal_extensions_func != NULL &&
-      original_php_register_internal_extensions_func() != SUCCESS) {
-    return FAILURE;
-  }
-
-  zend_module_entry *module = &ext_go_module_entry;
-  if (zend_register_internal_module(module) == NULL) {
-    return FAILURE;
-  };
-
-  return SUCCESS;
-}
-
-void register_extension() {
-  original_php_register_internal_extensions_func =
-      php_register_internal_extensions_func;
-  php_register_internal_extensions_func = register_internal_extensions;
-}
