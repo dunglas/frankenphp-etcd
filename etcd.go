@@ -40,7 +40,7 @@ func go_client_load_or_create(
 	rejectOldCluster,
 	permitWithoutStream bool,
 ) (error *C.char) {
-	name := frankenphp.GoString(phpName)
+	name := frankenphp.GoString(unsafe.Pointer(phpName))
 
 	clientRegistryMu.Lock()
 	defer clientRegistryMu.Unlock()
@@ -54,7 +54,7 @@ func go_client_load_or_create(
 
 	endpoints := make([]string, phpEndpointsLen)
 	for i := 0; i < int(phpEndpointsLen); i++ {
-		endpoints[i] = frankenphp.GoString(phpEndpoints)
+		endpoints[i] = frankenphp.GoString(unsafe.Pointer(phpEndpoints))
 		phpEndpoints = (*C.zend_string)(unsafe.Add(unsafe.Pointer(phpEndpoints), unsafe.Sizeof(C.zend_string{})))
 	}
 
@@ -68,8 +68,8 @@ func go_client_load_or_create(
 		DialKeepAliveTimeout: time.Duration(dialKeepAliveTimeout),
 		MaxCallSendMsgSize:   int(maxCallSendMsgSize),
 		MaxCallRecvMsgSize:   int(maxCallRecvMsgSize),
-		Username:             frankenphp.GoString(username),
-		Password:             frankenphp.GoString(password),
+		Username:             frankenphp.GoString(unsafe.Pointer(username)),
+		Password:             frankenphp.GoString(unsafe.Pointer(password)),
 		RejectOldCluster:     rejectOldCluster,
 		PermitWithoutStream:  permitWithoutStream,
 	}
@@ -97,7 +97,7 @@ func go_client_load_or_create(
 
 //export go_client_close
 func go_client_close(phpName *C.zend_string) *C.char {
-	name := frankenphp.GoString(phpName)
+	name := frankenphp.GoString(unsafe.Pointer(phpName))
 
 	clientRegistryMu.Lock()
 	defer clientRegistryMu.Unlock()
@@ -114,7 +114,7 @@ func go_client_close(phpName *C.zend_string) *C.char {
 
 //export go_client_put
 func go_client_put(phpName *C.zend_string, key, value *C.zend_string, timeout int64) *C.char {
-	name := frankenphp.GoString(phpName)
+	name := frankenphp.GoString(unsafe.Pointer(phpName))
 
 	ctx := getContext()
 	if timeout != 0 {
@@ -137,7 +137,7 @@ func go_client_put(phpName *C.zend_string, key, value *C.zend_string, timeout in
 
 //export go_client_get
 func go_client_get(phpName *C.zend_string, key *C.zend_string, timeout int64) (val *C.char, error *C.char) {
-	name := frankenphp.GoString(phpName)
+	name := frankenphp.GoString(unsafe.Pointer(phpName))
 
 	ctx := getContext()
 	if timeout != 0 {
@@ -168,7 +168,7 @@ func go_client_get(phpName *C.zend_string, key *C.zend_string, timeout int64) (v
 
 //export go_client_delete
 func go_client_delete(phpName *C.zend_string, key *C.zend_string, timeout int64) *C.char {
-	name := frankenphp.GoString(phpName)
+	name := frankenphp.GoString(unsafe.Pointer(phpName))
 
 	ctx := getContext()
 	if timeout != 0 {
