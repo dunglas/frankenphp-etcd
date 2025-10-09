@@ -7,6 +7,7 @@ This extension enables the creation of global etcd clients that can be shared ac
 ensuring efficient resource usage and high performance.
 
 > [!NOTE]
+>
 > frankenphp-etcd has mainly been created to demonstrate how to use Go to develop distributable PHP/FrankenPHP extensions.
 > Its feature set is currently limited to the basic operations of the etcd client.
 >
@@ -22,7 +23,6 @@ Then, use [`xcaddy`](https://github.com/caddyserver/xcaddy) to build FrankenPHP 
 
 ```console
 CGO_ENABLED=1 \
-XCADDY_GO_BUILD_FLAGS="-ldflags='-w -s' -tags=nobadger,nomysql,nopgx" \
 CGO_CFLAGS=$(php-config --includes) \
 CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
 xcaddy build \
