@@ -8,7 +8,7 @@ require (
 	github.com/caddyserver/caddy/v2 v2.10.0
 	github.com/dunglas/frankenphp/caddy v1.7.0
 	go.etcd.io/etcd/client/v3 v3.6.5
-	go.uber.org/zap v1.27.0
+	go.uber.org/zap v1.27.1
 )
 
 require (
