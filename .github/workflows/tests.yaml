@@ -17,8 +17,8 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
         with:
           go-version-file: "go.mod"
       - uses: shivammathur/setup-php@v2
@@ -37,6 +37,6 @@ jobs:
       - name: Run tests
         run: go test -tags nobadger,nomysql,nopgx,nowatcher,nobrotli -race -v ./...
       - name: Lint Go code
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
           version: "latest"
